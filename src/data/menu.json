@@ -12,7 +12,7 @@
     "title": "Projects"
   },
   {
-    "pathname": "/blogs",
-    "title": "Blogs"
+    "pathname": "/posts",
+    "title": "Posts"
   }
 ]
