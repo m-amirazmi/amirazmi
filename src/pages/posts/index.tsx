@@ -13,7 +13,7 @@ export default function PostsListPage({ posts }: { posts: Post[] }) {
           new Date()
         );
         return (
-          <div className="w-1/2 p-2" key={p._id}>
+          <div className="w-full md:w-1/2 p-2" key={p._id}>
             <Link
               className="block border rounded-xl h-full hover:border-slate-800/50 transition-colors duration-150 ease-linear"
               href={p.url}
