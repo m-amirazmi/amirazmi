@@ -15,7 +15,7 @@ export default function PostPage({ post }: { post: Post }) {
       >
         Back to Posts
       </Link>
-      <div className="w-[720px] h-[320px] mb-8">
+      <div className="aspect-[720/320] mb-6 md:mb-8">
         <Image
           src={post.thumbnail as string}
           alt={post.title}
@@ -24,7 +24,7 @@ export default function PostPage({ post }: { post: Post }) {
           className="w-full h-full object-center object-cover rounded-xl"
         />
       </div>
-      <div className="prose md:prose-xl">
+      <div className="prose prose-lg md:prose-xl">
         <h1>{post.title}</h1>
         <MDXContent />
       </div>
