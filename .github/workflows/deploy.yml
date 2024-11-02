@@ -24,6 +24,9 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: List Build Output
+        run: ls -la dist # Check the contents of the dist directory
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -46,5 +49,5 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/"
+          source: "portfolio-dist/dist/"
           target: "/var/www/amirazmi"
