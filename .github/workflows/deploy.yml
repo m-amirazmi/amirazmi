@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-dist
-          path: dist
+          path: dist/**
 
   # Job 2: Deploy to Server
   deploy:
@@ -43,14 +43,9 @@ jobs:
         with:
           name: portfolio-dist
 
-      - name: List Downloaded Artifact
-        run: ls -la .
+      - name: Install rsync
+        run: sudo apt-get install -y rsync
 
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/**"
-          target: "/var/www/amirazmi"
+      - name: Deploy to Server using rsync
+        run: |
+          rsync -avz -e "ssh -i ${SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no" . ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/amirazmi
