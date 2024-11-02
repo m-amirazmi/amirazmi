@@ -48,4 +48,4 @@ jobs:
 
       - name: Deploy to Server using rsync
         run: |
-          rsync -avz -e "ssh -i ${SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no" . ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/amirazmi
+          rsync -avz -e "ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no" . ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/amirazmi
