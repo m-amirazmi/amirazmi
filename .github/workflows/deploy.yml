@@ -26,12 +26,22 @@ jobs:
           npm install
           npm run build
 
-      # Step 4: Deploy the built files to the server
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./dist/."
-          target: "/home/amir/apps/amirazmi"
+      # Step 4: Deploy using rsync
+      - name: Deploy using rsync
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Configure SSH for rsync
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Add server's host key to known_hosts to prevent SSH prompt
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+          # Use rsync to transfer only the contents of 'dist' directory
+          rsync -avz --delete-after dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/amir/apps/amirazmi
+
+      # Optional: Cleanup SSH key
+      - name: Cleanup
+        run: rm -rf ~/.ssh/id_rsa
