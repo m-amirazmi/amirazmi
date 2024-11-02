@@ -43,6 +43,9 @@ jobs:
         with:
           name: portfolio-dist
 
+      - name: List files in download directory
+        run: ls -la /home/runner/work/amirazmi/amirazmi
+
       - name: List Downloaded Artifact
         run: ls -la portfolio-dist/dist/
 
