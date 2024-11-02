@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-dist
-          path: dist/**
+          path: dist
 
   # Job 2: Deploy to Server
   deploy:
