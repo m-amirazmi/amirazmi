@@ -40,7 +40,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
           # Use rsync to transfer only the contents of 'dist' directory
-          rsync -avz --delete-after dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/amir/apps/amirazmi
+          rsync -avz --delete-after dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/v1.amirazmi.my
 
       # Optional: Cleanup SSH key
       - name: Cleanup
