@@ -27,11 +27,17 @@ jobs:
       - name: List Dist Directory
         run: ls -la dist/
 
+      - name: Create Tarball
+        run: |
+          TAR_NAME="portfolio-dist-$(date +%Y%m%d%H%M%S).tar.gz"  # Create a unique tarball name
+          tar -zcf $TAR_NAME dist/  # Create the tarball from the dist directory
+          echo "TAR_NAME=$TAR_NAME" >> $GITHUB_ENV  # Save the tarball name to an environment variable
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-dist
-          path: dist/**
+          path: $TAR_NAME # Upload the tarball
 
   # Job 2: Deploy to Server
   deploy:
@@ -44,7 +50,7 @@ jobs:
           name: portfolio-dist
 
       - name: List Downloaded Artifact
-        run: ls -la .
+        run: ls -la . # List downloaded artifacts to verify
 
       - name: Deploy to Server
         uses: appleboy/scp-action@v0.1.7
@@ -54,3 +60,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "."
           target: "/var/www/amirazmi"
+
+      - name: Run Extraction Script
+        run: |
+          ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          cd /var/www/amirazmi
+          # Using the dynamic tarball name captured from the environment variable
+          tar --no-same-permissions -zxf portfolio-dist-*.tar.gz  # Adjust the name pattern as necessary
+          EOF
