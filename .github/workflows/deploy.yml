@@ -1,4 +1,4 @@
-name: My portfolio Website - amirazmi.my
+name: My Portfolio Website - amirazmi.my
 
 on:
   push:
@@ -24,14 +24,14 @@ jobs:
       - name: Build Project
         run: npm run build
 
-      - name: List Build Output
-        run: ls -la dist # Check the contents of the dist directory
+      - name: List Dist Directory
+        run: ls -la dist/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-dist
-          path: dist
+          path: dist/**
 
   # Job 2: Deploy to Server
   deploy:
@@ -43,6 +43,9 @@ jobs:
         with:
           name: portfolio-dist
 
+      - name: List Downloaded Artifact
+        run: ls -la portfolio-dist/dist/
+
       - name: Deploy to Server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -51,3 +54,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "portfolio-dist/dist/"
           target: "/var/www/amirazmi"
+          port: 22
+          timeout: 30s
+          command_timeout: 10m
+          use_insecure_cipher: false
+          rm: false
+          debug: true
+          strip_components: 0
+          overwrite: false
+          tar_dereference: false
+          tar_exec: tar
