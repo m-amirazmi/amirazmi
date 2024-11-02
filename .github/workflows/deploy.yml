@@ -43,11 +43,8 @@ jobs:
         with:
           name: portfolio-dist
 
-      - name: List files in download directory
-        run: ls -la /home/runner/work/amirazmi/amirazmi
-
       - name: List Downloaded Artifact
-        run: ls -la portfolio-dist/dist/
+        run: ls -la amirazmi/
 
       - name: Deploy to Server
         uses: appleboy/scp-action@v0.1.7
@@ -55,7 +52,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "portfolio-dist/dist/"
+          source: "amirazmi/"
           target: "/var/www/amirazmi"
           port: 22
           timeout: 30s
